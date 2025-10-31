@@ -8,6 +8,7 @@ import com.ragchat.storage.repository.MessageRepository;
 import com.ragchat.storage.repository.SessionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -23,6 +24,7 @@ public class SessionService {
     private final SessionRepository sessionRepository;
     private final MessageRepository messageRepository;
     private final KafkaProducerService kafkaProducerService;
+    private final ModelMapper modelMapper;
 
     @Transactional
     public SessionResponse createSession(String userId, SessionRequest request) {
@@ -119,16 +121,9 @@ public class SessionService {
     }
 
     private SessionResponse mapToResponse(ChatSession session) {
+        SessionResponse response = modelMapper.map(session, SessionResponse.class);
         int messageCount = (int) messageRepository.countBySessionId(session.getId());
-
-        return SessionResponse.builder()
-                .id(session.getId())
-                .userId(session.getUserId())
-                .sessionName(session.getSessionName())
-                .isFavorite(session.getIsFavorite())
-                .createdAt(session.getCreatedAt())
-                .updatedAt(session.getUpdatedAt())
-                .messageCount(messageCount)
-                .build();
+        response.setMessageCount(messageCount);
+        return response;
     }
 }

@@ -20,6 +20,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/sessions/{sessionId}/messages")
 @RequiredArgsConstructor
@@ -34,7 +38,7 @@ public class MessageController {
 
     @PostMapping
     @Operation(summary = "Add a message", description = "Adds a new message to a chat session")
-    public ResponseEntity<MessageResponse> addMessage(
+    public ResponseEntity<List<MessageResponse>> addMessage(
             @PathVariable Long sessionId,
             @Valid @RequestBody MessageRequest request,
             Authentication authentication) {
@@ -43,14 +47,14 @@ public class MessageController {
         rateLimitService.checkRateLimit(userId);
 
         log.info("Adding message to session {} by user: {}", sessionId, userId);
-        MessageResponse response = messageService.addMessage(sessionId, userId, request);
+        List<MessageResponse> response = messageService.addMessage(sessionId, userId, request);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
     @Operation(summary = "Get messages", description = "Retrieves all messages from a chat session with pagination")
-    public ResponseEntity<Page<MessageResponse>> getMessages(
+    public ResponseEntity<Map<String, Object>> getMessages(
             @PathVariable Long sessionId,
             @Parameter(description = "Page number (0-based)") @RequestParam(defaultValue = "0") int page,
             @Parameter(description = "Page size") @RequestParam(defaultValue = "20") int size,
@@ -61,8 +65,7 @@ public class MessageController {
         rateLimitService.checkRateLimit(userId);
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(direction, "timestamp"));
-        Page<MessageResponse> messages = messageService.getMessages(sessionId, userId, pageable);
-
-        return ResponseEntity.ok(messages);
+        Map<String, Object> response = messageService.getMessages(sessionId, userId, pageable);
+        return ResponseEntity.ok(response);
     }
 }

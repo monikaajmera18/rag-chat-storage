@@ -93,6 +93,7 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       RATE_LIMIT_REQUESTS: ${RATE_LIMIT_REQUESTS}
       RATE_LIMIT_DURATION: ${RATE_LIMIT_DURATION}
+      HUGGINGFACE_API_KEY: ${HUGGINGFACE_API_KEY}
     networks:
       - rag-chat-network
 

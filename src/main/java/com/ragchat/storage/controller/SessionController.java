@@ -61,7 +61,6 @@ public class SessionController {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
         Page<SessionResponse> sessions = sessionService.getAllSessions(userId, pageable);
-
         return ResponseEntity.ok(sessions);
     }
 
@@ -77,7 +76,6 @@ public class SessionController {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "updatedAt"));
         Page<SessionResponse> sessions = sessionService.getFavoriteSessions(userId, pageable);
-
         return ResponseEntity.ok(sessions);
     }
 

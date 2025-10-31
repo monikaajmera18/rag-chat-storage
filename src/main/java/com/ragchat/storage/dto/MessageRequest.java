@@ -14,9 +14,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MessageRequest {
 
-    @NotNull(message = "Sender type is required")
-    private SenderType sender;
-
     @NotBlank(message = "Content is required")
     private String content;
 

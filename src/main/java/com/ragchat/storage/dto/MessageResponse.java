@@ -1,5 +1,6 @@
 package com.ragchat.storage.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ragchat.storage.model.SenderType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

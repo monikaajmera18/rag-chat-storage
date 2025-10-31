@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,7 +32,7 @@ public class AuthController {
             summary = "Generate JWT Token (POST)",
             description = "Generates a JWT token for testing purposes. Send userId in request body."
     )
-    public ResponseEntity<Map<String, String>> generateToken(@RequestBody Map<String, String> request) {
+    public ResponseEntity<Void> generateToken(@RequestBody Map<String, String> request) {
         log.info("Token generation request received");
 
         String userId = request.getOrDefault("userId", "default-user");
@@ -39,17 +40,14 @@ public class AuthController {
 
         String token = jwtUtil.generateToken(userId);
         log.info("Token is: {}", token);
-        Map<String, String> response = new HashMap<>();
-        response.put("userId", userId);
-        response.put("token", token);
-        response.put("tokenType", "Bearer");
-        response.put("expiresIn", "86400 seconds (24 hours)");
-        response.put("message", "Token generated successfully");
-        response.put("usage", "Add to request header: Authorization: Bearer " + token);
-
         log.info("Token generated successfully for user: {}", userId);
 
-        return ResponseEntity.ok(response);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-JWT-Token", token);
+
+        return ResponseEntity.noContent()
+                .headers(headers)
+                .build();
     }
 
     /**
