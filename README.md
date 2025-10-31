@@ -239,7 +239,6 @@ curl --location 'http://localhost:8080/api/sessions/1/messages' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjEyMyIsImlhdCI6MTc2MTQ3MjQ3NiwiZXhwIjoxNzYxNTU4ODc2fQ.QXHNQvba_73UpBORI0OT_F3cz_p8LlsYomqHP-_47sU' \
 --header 'Content-Type: application/json' \
 --data ' {
-     "sender": "USER",
      "content": "What is Spring Boot?",
      "context": "User asking about Spring Boot framework"
    }'
@@ -250,12 +249,7 @@ curl --location 'http://localhost:8080/api/sessions/1/messages' \
 curl --location --request GET 'http://localhost:8080/api/sessions/1/messages?page=0&size=20&direction=ASC' \
 --header 'X-API-Key: my-super-secure-api-key-change-me-12345' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjEyMyIsImlhdCI6MTc2MTQ3MjQ3NiwiZXhwIjoxNzYxNTU4ODc2fQ.QXHNQvba_73UpBORI0OT_F3cz_p8LlsYomqHP-_47sU' \
---header 'Content-Type: application/json' \
---data ' {
-     "sender": "USER",
-     "content": "What is Spring Boot?",
-     "context": "User asking about Spring Boot framework"
-   }'
+--header 'Content-Type: application/json' 
 ```
 
 ### 🤖 Chat with AI
@@ -267,12 +261,32 @@ curl --location 'http://localhost:8080/api/sessions/1/messages' \
 --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjEyMyIsImlhdCI6MTc2MTQ3MjQ3NiwiZXhwIjoxNzYxNTU4ODc2fQ.QXHNQvba_73UpBORI0OT_F3cz_p8LlsYomqHP-_47sU' \
 --header 'Content-Type: application/json' \
 --data '{
-     "sender": "AI",
      "content": "Spring Boot is a framework that makes it easy to create stand-alone, production-grade Spring-based applications. It provides auto-configuration and embedded servers.",
      "context": "Retrieved from Spring documentation database"
    }'
 ```
 
+#### Above API Response
+```json
+[
+    {
+        "id": 23,
+        "sessionId": 5,
+        "sender": "USER",
+        "content": "What is the temperature today for dubai?",
+        "context": "User asking about dubai temperature",
+        "timestamp": "2025-10-31T03:44:19.501938783"
+    },
+    {
+        "id": 24,
+        "sessionId": 5,
+        "sender": "AI",
+        "content": "I'm a large language model, I don't have real-time access to current temperatures. However, I can provide you with general information about Dubai's climate.\n\nDubai has a hot desert climate, with very little rainfall throughout the year. The temperature in Dubai can vary greatly depending on the time of year.\n\nHere's a general idea of the average temperatures in Dubai:\n\n* Summer (June to September): 38°C (100°F) to 42°C (108°F)\n* Autumn (October to November): 24°C (75°F) to 32°C (90°F)\n* Winter (December to February): 15°C (59°F) to 22°C (72°F)\n* Spring (March to May): 22°C (72°F) to 32°C (90°F)\n\nIf you want to know the current temperature in Dubai, I recommend checking a reliable weather website or app, such as AccuWeather or Weather.com, for the most up-to-date information.",
+        "context": "User asking about dubai temperature\nI'm a large language model, I don't have real-time access to current temperatures. However, I can provide you with general information about Dubai's climate.\n\nDubai has a hot desert climate, with very little rainfall throughout the year. The temperature in Dubai can vary greatly depending on the time of year.\n\nHere's a general idea of the average temperatures in Dubai:\n\n* Summer (June to September): 38°C (100°F) to 42°C (108°F)\n* Autumn (October to November): 24°C (75°F) to 32°C (90°F)\n* Winter (December to February): 15°C (59°F) to 22°C (72°F)\n* Spring (March to May): 22°C (72°F) to 32°C (90°F)\n\nIf you want to know the current temperature in Dubai, I recommend checking a reliable weather website or app, such as AccuWeather or Weather.com, for the most up-to-date information.",
+        "timestamp": "2025-10-31T03:44:23.94820007"
+    }
+]
+```
 
 ### 📄 Document Management
 
@@ -307,6 +321,7 @@ curl --location 'http://localhost:8080/actuator/health'
 | `RATE_LIMIT_REQUESTS` | How many requests are allowed | Required |
 | `RATE_LIMIT_DURATION` | How many requests are allowed in this duration | Required |
 | `SHOW_SQL` | Logging purpose | Required |
+| `HUGGINGFACE_API_KEY` | API key for LLM integration | Required |
 
 
 ### Database Configuration
